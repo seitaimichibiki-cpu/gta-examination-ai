@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使い方ガイド - GTA 検査表 AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .help-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
+        }
+        .help-header {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .help-header h1 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+        }
+        .help-section {
+            margin-bottom: 2.5rem;
+        }
+        .help-section h2 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .help-section p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .help-step {
+            background: #F8FAFC;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            color: var(--text-primary);
+        }
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+        .faq-q {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .faq-a {
+            color: var(--text-secondary);
+            padding-left: 1.7rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fa-solid fa-notes-medical"></i>
+                <h1>GTA Examination AI - ヘルプページ</h1>
+            </div>
+            <a href="index.html" class="primary-btn" style="text-decoration: none;">検査ツールに戻る</a>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="app-main" style="display: block;">
+        <div class="help-container">
+            <div class="help-header">
+                <i class="fa-solid fa-book-open" style="font-size: 2rem; color: var(--primary);"></i>
+                <h1>使い方・設定ガイド</h1>
+            </div>
+
+            <section class="help-section">
+                <h2><i class="fa-solid fa-rocket"></i> はじめに</h2>
+                <p>「GTA 検査表 AI」は、重力絶対診断（GTA）における複雑なAS/PI-tの加点ロジックを全自動で計算し、最終診断と「次に行うべき推奨手技」を提示する現場用アシスタントツールです。<br>システムが自動でインバランス構造体の点数を把握するため、手技の選択に迷うことなく、確信を持って患者様に対応できるようになります。</p>
+            </section>
+
+            <section class="help-section">
+                <h2><i class="fa-solid fa-key"></i> 1. 初期設定（APIキーの取得）</h2>
+                <p>AI機能を利用するにはGoogleの「Gemini APIキー（無料）」の設定が必要です。以下の手順で設定してください。</p>
+                <div class="help-step">
+                    <strong>ステップ 1：</strong> <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--primary); font-weight: bold;">Google AI Studio</a> にアクセスし、Googleアカウントでログインします。
+                </div>
+                <div class="help-step">
+                    <strong>ステップ 2：</strong> 画面の「Create API Key」ボタンを押し、最初から用意されているプロジェクトを利用してキーを作成します。
+                </div>
+                <div class="help-step">
+                    <strong>ステップ 3：</strong> 画面に表示された「AIzaSy...」から始まる長い文字列をコピーします。
+                </div>
+                <div class="help-step">
+                    <strong>ステップ 4：</strong> 検査ツールの右上にある「⚙️ 設定ボタン」を押し、コピーしたキーを貼り付けて「保存」します。
+                </div>
+            </section>
+
+            <section class="help-section">
+                <h2><i class="fa-solid fa-list-check"></i> 2. 検査の入力と判定方法</h2>
+                <p>患者様の検査結果に従って、該当する項目にチェックを入れてください。</p>
+                <ul style="color: var(--text-secondary); line-height: 1.7; padding-left: 1.5rem; margin-bottom: 1rem;">
+                    <li><strong>「不明・異常なし」について：</strong> 明らかな異常が見られない場合や判別がつかない場合に選択してください。加点計算から除外されます。</li>
+                    <li><strong>単一選択と複数選択：</strong> 骨盤テストなどの一部の項目は、システムのルール上1つしか選べないようになっています。</li>
+                </ul>
+                <p>入力が終わったら、画面右側の<strong>「判定を実行」</strong>ボタンを押します。AIが入力内容を即座に分析し、左右それぞれの確定診断と推奨手技（面圧、AKA、AS整復等）を提示します。</p>
+            </section>
+
+            <section class="help-section">
+                <h2><i class="fa-solid fa-book-medical"></i> 3. 専門用語の解説</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-q" style="color: var(--primary);">AS（Anterior Superior：前上方変位）</div>
+                    <div class="faq-a">寛骨（骨盤）が前上方に変位している状態です。各検査でAS傾向のスコアが上回った場合、原則としてベースの「面圧」もしくは「AS整復」が推奨手技として出力されます。</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q" style="color: var(--primary);">PI-t（Posterior Inferior：後下方変位）</div>
+                    <div class="faq-a">寛骨（骨盤）が後下方に変位している状態です。各検査でPI-t傾向のスコアが上回った場合、原則としてベースの「面圧」もしくは「AKA（左ならPI-t整復）」が推奨手技として出力されます。</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q" style="color: var(--primary);">CGW（コグウィール：カクカク上がる）</div>
+                    <div class="faq-a">長母趾伸筋テストにおいて、力を入れた際にスムーズに挙上できず、歯車のように段階的にカクカクと跳ねるように上がる現象のことです。PI-tの兆候として加点されます。</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q" style="color: var(--primary);">レバーアーム（B1・B2側屈テスト）</div>
+                    <div class="faq-a">体を側屈させた際に、突っ張る・引っ張られる・伸び感を感じる側のことです。B1とB2でレバーが同側に出るか・反対側に出るかの複雑な組み合わせを、システムが自動で判別してスコア化します。</div>
+                </div>
+            </section>
+
+            <section class="help-section">
+                <h2><i class="fa-solid fa-circle-info"></i> 4. よくある質問 (FAQ)</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-q"><i class="fa-solid fa-q" style="color: #EF4444;"></i> APIキーはお金がかかりますか？</div>
+                    <div class="faq-a">現在のバージョンでは、通常の使用範囲であればGoogleの「無料枠」内でご利用いただけます。特別なクレジットカード登録なども（無料枠の範囲内であれば）不要です。</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q"><i class="fa-solid fa-q" style="color: #EF4444;"></i> 「ティアドロップサイン」とは何ですか？</div>
+                    <div class="faq-a">PCT（PSIS押圧）の際に、10秒程度遅れて臀部やもも裏に出現するボワーンとした放散痛のことです。本システムは、このサインがチェックされた場合、他の検査項目がどれだけASに傾いていても「強制的にPI-t確定判定」を下し、安全な処置を推奨する設計になっています。</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q"><i class="fa-solid fa-q" style="color: #EF4444;"></i> 「This model is currently experiencing high demand...」というエラーが出ました。</div>
+                    <div class="faq-a">Google側のAIサーバーが世界的に混雑している場合に出る一時的なシステムエラーです。1〜3分ほど時間を空けてから、再度「判定を実行」ボタンを押すと通常通り動作します。</div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
