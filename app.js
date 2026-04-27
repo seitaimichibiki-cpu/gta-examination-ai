@@ -306,9 +306,26 @@ function bindEvents() {
     });
     document.getElementById('save-settings-btn').addEventListener('click', () => {
         const key = document.getElementById('api-key-input').value;
+        if (!key) {
+            alert("APIキーを入力してください。");
+            return;
+        }
         localStorage.setItem('gemini_api_key', key);
         document.getElementById('settings-modal').classList.add('hidden');
         alert("APIキーを保存しました。");
+        
+        //Restore empty state if it was showing the API warning
+        const outputDiv = document.getElementById('ai-output');
+        if (outputDiv && outputDiv.querySelector('.api-warning')) {
+            outputDiv.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <p>左の検査項目にチェックを入れ、<br>「判定を実行」をクリックしてください。</p>
+                </div>
+            `;
+        }
     });
     
     // Run AI
@@ -319,6 +336,20 @@ function loadApiKey() {
     const key = localStorage.getItem('gemini_api_key');
     if(key) {
         document.getElementById('api-key-input').value = key;
+    } else {
+        const outputDiv = document.getElementById('ai-output');
+        if (outputDiv) {
+            outputDiv.innerHTML = `
+                <div class="empty-state api-warning" style="border: 2px dashed #EF4444; background: #FEF2F2;">
+                    <div class="empty-icon" style="color: #EF4444;">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <p style="color: #B91C1C; font-weight: bold; margin-bottom: 0.5rem;">初期設定が必要です</p>
+                    <p style="color: #7F1D1D; font-size: 0.9rem; margin-bottom: 1rem;">AI判定を利用するには、まず設定から<br>Google Gemini APIキーを設定してください。</p>
+                    <button onclick="document.getElementById('settings-modal').classList.remove('hidden')" class="primary-btn" style="background: #EF4444;">API設定を開く</button>
+                </div>
+            `;
+        }
     }
 }
 
