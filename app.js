@@ -391,7 +391,7 @@ async function runAiDiagnosis() {
     const userPrompt = `以下の検査結果が得られました。\n\n${checkedItems.map(i => '- ' + i).join('\n')}\n\nこの所見から考えられる状態（アライメント異常、非荷重/外傷の鑑別など）と処置方針を立案してください。`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
