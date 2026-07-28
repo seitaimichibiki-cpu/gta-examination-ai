@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gta-ai-cache-v1';
+const CACHE_NAME = 'gta-ai-cache-v2';
 const urlsToCache = [
   './',
   './index.html',
@@ -9,7 +9,9 @@ const urlsToCache = [
   './icon-512.png'
 ];
 
+// インストール時：新しいキャッシュを作成
 self.addEventListener('install', event => {
+  self.skipWaiting(); // 即座に新しいSWを有効化
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -18,14 +20,36 @@ self.addEventListener('install', event => {
   );
 });
 
+// 有効化時：古いキャッシュを削除
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames
+          .filter(name => name !== CACHE_NAME)
+          .map(name => caches.delete(name))
+      );
+    }).then(() => self.clients.claim()) // 即座に全タブを制御
+  );
+});
+
+// フェッチ時：ネットワーク優先、失敗時のみキャッシュを使用
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        if (response) {
-          return response;
+        // ネットワーク成功時：キャッシュも更新する
+        if (response.ok) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseClone);
+          });
         }
-        return fetch(event.request);
+        return response;
+      })
+      .catch(() => {
+        // ネットワーク失敗時（オフライン等）：キャッシュから返す
+        return caches.match(event.request);
       })
   );
 });
